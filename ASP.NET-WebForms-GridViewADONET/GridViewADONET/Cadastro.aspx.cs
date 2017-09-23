@@ -90,7 +90,7 @@ namespace GridViewADONET
 
             string nome = (gvr.FindControl("txtNome") as TextBox).Text;
             string cpf = (gvr.FindControl("txtCPF") as TextBox).Text;
-            string sqlStatement = "UPDATE FROM clientes SET NOME = @newNome where nome = @cpf";
+            string sqlStatement = "UPDATE clientes SET NOME = @newNome where cpf = @cpf";
 
             using (SqlConnection connection = new SqlConnection(GetConnectionString()))
             {
@@ -131,27 +131,35 @@ namespace GridViewADONET
             Label lbldeleteid = (Label)row.FindControl("lblNome");
             string sqlStatement = "DELETE FROM clientes where nome = @nome";
 
-            using (SqlConnection connection = new SqlConnection(GetConnectionString()))
+            try
             {
-
-                //string sqlStatement = "INSERT INTO clientes(nome, cpf, endereco) values('" + nome + "', '" + cpf + "','" + endereco + "')";
-
-                //http://www.andrealveslima.com.br/blog/index.php/2015/10/21/pare-de-concatenar-strings-nas-suas-sentencas-sql-utilize-parametros-do-ado-net/
-                //https://stackoverflow.com/questions/681583/sql-injection-on-insert
-                //http://www.c-sharpcorner.com/UploadFile/9f0ae2/gridview-edit-delete-and-update-in-Asp-Net/
-
-                using (SqlCommand sqlCmd = new SqlCommand(sqlStatement, connection))
+                using (SqlConnection connection = new SqlConnection(GetConnectionString()))
                 {
 
-                    sqlCmd.Parameters.AddWithValue("@NOME", lbldeleteid.Text);
-                    connection.Open();
+                    //string sqlStatement = "INSERT INTO clientes(nome, cpf, endereco) values('" + nome + "', '" + cpf + "','" + endereco + "')";
 
-                    sqlCmd.ExecuteNonQuery();
+                    //http://www.andrealveslima.com.br/blog/index.php/2015/10/21/pare-de-concatenar-strings-nas-suas-sentencas-sql-utilize-parametros-do-ado-net/
+                    //https://stackoverflow.com/questions/681583/sql-injection-on-insert
+                    //http://www.c-sharpcorner.com/UploadFile/9f0ae2/gridview-edit-delete-and-update-in-Asp-Net/
 
-                    connection.Close();
+                    using (SqlCommand sqlCmd = new SqlCommand(sqlStatement, connection))
+                    {
+
+                        sqlCmd.Parameters.AddWithValue("@NOME", lbldeleteid.Text);
+                        connection.Open();
+
+                        sqlCmd.ExecuteNonQuery();
+
+                        connection.Close();
+                    }
+
                 }
-
             }
+            catch (Exception ex)
+            {
+                string error = ex.Message;
+            }
+
 
             BindGridView();
         }
