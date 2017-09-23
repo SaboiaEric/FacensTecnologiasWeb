@@ -71,7 +71,12 @@
                     OnRowEditing="GridView1_RowEditing">
         <Columns>
             <asp:TemplateField HeaderText="Id">
-                <ItemTemplate><%# Container.DataItemIndex %></ItemTemplate>
+                    <ItemTemplate>
+                        <%# Eval("Id") %>
+                    </ItemTemplate>
+                    <EditItemTemplate>
+                        <asp:TextBox  ID="TextId" runat="server" Text='<%# Eval("Id") %>'></asp:TextBox>
+                    </EditItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField HeaderText="Nome">
                     <ItemTemplate>

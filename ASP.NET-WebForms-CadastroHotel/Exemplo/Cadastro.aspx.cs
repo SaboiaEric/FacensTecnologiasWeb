@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -64,8 +65,20 @@ namespace Exemplo
 
         protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
+
+            GridViewRow row = GridView1.Rows[e.RowIndex];
+            ColetaInformacoes(row);
+            
             GridView1.EditIndex = -1;
             PreencherGrid();
+        }
+
+        private void ColetaInformacoes(GridViewRow row)
+        {
+            string ID = ((TextBox)(row.Cells[0].Controls[1])).Text;
+            string name = ((TextBox)(row.Cells[1].Controls[1])).Text;
+            string sobrenome = ((TextBox)(row.Cells[2].Controls[1])).Text;
+
         }
 
         protected void GridView1_RowEditing(object sender, GridViewEditEventArgs e)
